@@ -13,10 +13,10 @@ var vows = require('vows'),
 vows.describe('nconf/stores/argv').addBatch({
   "An instance of nconf.Argv": {
     topic: new nconf.Argv(),
-    "should have the correct methods defined": function (argv) {
-      assert.isFunction(argv.loadSync);
-      assert.isFunction(argv.loadArgv);
-      assert.isFalse(argv.options);
+    "should have the correct methods defined": function (store) {
+      assert.isFunction(store.loadSync);
+      assert.isFunction(store.loadArgv);
+      assert.isFalse(store.options);
     }
   }
 }).export(module);
