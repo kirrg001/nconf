@@ -211,6 +211,8 @@ Responsible for loading the values parsed from `process.env` into the configurat
   nconf.env({
     separator: '__',
     arraySeparator: ',',
+    // This is necessary to parse a value of e.g 1, as ['1'] and not as  ['1', '']
+    allowSingleValueArray: ['my_env_with_potentially_single_value_array'], // Can also be true to allow it for all env variables.
     match: /^whatever_matches_this_will_be_whitelisted/,
     whitelist: ['database__host', 'only', 'load', 'these', 'values', 'if', 'whatever_doesnt_match_but_is_whitelisted_gets_loaded_too']
   });
