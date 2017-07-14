@@ -21,7 +21,7 @@ vows.describe('nconf/stores/env').addBatch({
                 assert.lengthOf(store.whitelist, 0);
                 assert.equal(store.separator, '');
                 assert.equal(store.arraySeparator, false);
-                assert.equal(store.arraySeparator, false);
+                assert.equal(store.allowSingleValueArray, true);
             },
             "should recognise arrays": function (store) {
                 process.env['arr'] = 'a,b,c';
@@ -52,16 +52,16 @@ vows.describe('nconf/stores/env').addBatch({
                 store.loadEnv();
                 assert.deepEqual(store.get('a').arr, ['a', 'b', 'c']);
             },
-            "should recognise arrays with second element empty": function (store) {
+            "should recognise array as single-element array with second element empty": function (store) {
                 process.env['b'] = 'a,';
                 store.loadEnv();
-                assert.deepEqual(store.get('b'), ['a', '',]);
+                assert.deepEqual(store.get('b'), ['a']);
             }
         },
         "-> with allowSingleValueArray option true": {
             topic: new nconf.Env({
                 arraySeparator: ',',
-                allowSingleValueArray: true,
+                allowSingleValueArray: false,
                 separator: '__'
             }),
             "should have the correct methods defined": function (store) {
@@ -71,7 +71,7 @@ vows.describe('nconf/stores/env').addBatch({
                 assert.lengthOf(store.whitelist, 0);
                 assert.equal(store.separator, '__');
                 assert.equal(store.arraySeparator, ',');
-                assert.equal(store.allowSingleValueArray, true);
+                assert.equal(store.allowSingleValueArray, false);
             },
             "should recognise arrays": function (store) {
                 process.env['arr'] = 'a,b,c';
@@ -83,10 +83,10 @@ vows.describe('nconf/stores/env').addBatch({
                 store.loadEnv();
                 assert.deepEqual(store.get('a').arr, ['a', 'b', 'c']);
             },
-            "should recognise array as single-element array with second element empty": function (store) {
+            "should recognise arrays with second element empty": function (store) {
                 process.env['b'] = 'a,';
                 store.loadEnv();
-                assert.deepEqual(store.get('b'), ['a']);
+                assert.deepEqual(store.get('b'), ['a', '',]);
             },
             "should recognise array with other element empty": function (store) {
                 process.env['c'] = 'a,b,';
